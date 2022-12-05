@@ -47,6 +47,7 @@ jobs:
           file: ./${{ env.CONTEXT }}/Dockerfile
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
+          build-args: VERSION=${{ env.VERSION }}
           tags: |
             zydou/${{ github.workflow }}:latest
             zydou/${{ github.workflow }}:${{ env.VERSION }}
