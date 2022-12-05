@@ -42,7 +42,7 @@ services:
 
 This will pulls the `zydou/v2ray` image tagged `v4.45.2` from Docker Hub if it is not already present on the local host. It then starts a container running a `v2ray` service and exposes the container's internal port `1080` to port `12345` of the host machine.
 
-Check out [all tags](https://hub.docker.com/r/zydou/v2ray/tags) if you need other version.
+Check out [all tags](https://hub.docker.com/r/zydou/v2ray/tags) if you need another version.
 
 ## Source code
 
@@ -50,4 +50,4 @@ Check out [all tags](https://hub.docker.com/r/zydou/v2ray/tags) if you need othe
 
 ## LICENSE
 
-[MIT](https://github.com/zydou/gfw/LICENSE.md)
+[MIT](https://github.com/zydou/gfw/LICENSE)
