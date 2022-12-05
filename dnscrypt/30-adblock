@@ -1,0 +1,3 @@
+#!/bin/sh
+
+wget -O /app/blocked-names.txt https://anti-ad.net/domains.txt
