@@ -45,7 +45,7 @@ Check out [all tags](https://hub.docker.com/r/zydou/naiveproxy/tags) if you need
 
 Currently, naiveproxy doesn't support multiple listen addresses, nor multiple server addresses. ([#365](https://github.com/klzgrad/naiveproxy/issues/365)).
 
-I use a `alpine` based `[s6-overlay](https://github.com/zydou/s6-overlay)` image to enable the multiple listen addresses and multiple server addresses support.
+I use a `alpine` based [s6-overlay](https://github.com/zydou/s6-overlay) image to enable the multiple listen addresses and multiple server addresses support.
 
 To use this feature, you need `zydou/naiveproxy` image tagged with `multi`. An example `docker-compose.yml` is shown below.
 
