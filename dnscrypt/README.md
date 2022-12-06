@@ -59,9 +59,9 @@ You can add the following lines to your `dnscrypt-proxy.toml` to enable the adbl
 blocked_names_file = '/app/blocked-names.txt'
 ```
 
-### Accelerated Chinese domains
+### Accelerate Chinese domains
 
-`cnlist` tag is bundled with a forwarding rule file generated from [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list)'s [accelerated-domains.china.conf](https://github.com/felixonmars/dnsmasq-china-list/blob/master/accelerated-domains.china.conf) and using `cron` job to update daily.
+`cnlist` tag is bundled with a forwarding rule file generated from [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list)'s [accelerated-domains.china.conf](https://github.com/felixonmars/dnsmasq-china-list/blob/master/accelerated-domains.china.conf) and use `cron` job to update daily.
 
 The forwarding rule file is located at `/app/forwarding-rules.txt` inside the container.
 

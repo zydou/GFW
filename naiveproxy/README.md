@@ -37,7 +37,7 @@ services:
 
 See [offical docs](https://github.com/klzgrad/naiveproxy/blob/master/USAGE.txt) for more command options
 
-This will pulls the `zydou/naiveproxy` image tagged `latest` from Docker Hub if it is not already present on the local host. It then starts a container running a `naiveproxy` service and exposes the container's internal port `1080` to port `12345` of the host machine.
+This will pull the `zydou/naiveproxy` image tagged with `latest` from Docker Hub if it is not already present on the local host. It then starts a container running a `naiveproxy` service and exposes the container's internal port `1080` to port `12345` of the host machine.
 
 Check out [all tags](https://hub.docker.com/r/zydou/naiveproxy/tags) if you need another version.
 

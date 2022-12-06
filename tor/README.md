@@ -32,7 +32,7 @@ services:
     restart: always
 ```
 
-This will pulls the `zydou/tor` image tagged `latest` from Docker Hub if it is not already present on the local host. It then starts a container running a `tor` service and exposes the container's internal port `1080` to port `12345` of the host machine.
+This will pull the `zydou/tor` image tagged with `latest` from Docker Hub if it is not already present on the local host. It then starts a container running a `tor` service and exposes the container's internal port `1080` to port `12345` of the host machine.
 
 Check out [all tags](https://hub.docker.com/r/zydou/tor/tags) if you need another version.
 
