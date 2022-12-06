@@ -1,0 +1,21 @@
+version: "3"
+services:
+  nextdns:
+    image: zydou/nextdns
+    container_name: nextdns
+    #user: $UID:$GID
+    hostname: B1
+    environment:
+      - TZ=America/Toronto
+      - NEXTDNS_ID=c1287f
+      - NEXTDNS_ARGUMENTS=-listen :53 -report-client-info -log-queries -cache-size 10MB -max-ttl 5s
+    ports:
+      - 127.0.3.1:53:53/udp
+    volumes:
+      - ~/Docker/nextdns/hosts:/etc/hosts:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "3"
+    restart: always
