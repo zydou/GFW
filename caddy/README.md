@@ -56,4 +56,4 @@ The `zydou/caddy:latest` only has `cloudflare` plugin. If you need to work with 
 
 ## LICENSE
 
-[MIT](https://github.com/zydou/gfw/LICENSE)
+[MIT](https://github.com/zydou/gfw/blob/master/LICENSE)
