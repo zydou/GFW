@@ -42,4 +42,4 @@ Check out [all tags](https://hub.docker.com/r/zydou/tor/tags) if you need anothe
 
 ## LICENSE
 
-[MIT](https://github.com/zydou/gfw/LICENSE)
+[MIT](https://github.com/zydou/gfw/blob/master/LICENSE)

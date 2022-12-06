@@ -91,4 +91,4 @@ Note: the `zydou/naiveproxy:multi` image currently supports up to **5** servers.
 
 ## LICENSE
 
-[MIT](https://github.com/zydou/gfw/LICENSE)
+[MIT](https://github.com/zydou/gfw/blob/master/LICENSE)

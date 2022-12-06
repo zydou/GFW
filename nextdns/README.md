@@ -46,4 +46,4 @@ You can also set custom command line parameters with `NEXTDNS_ARGUMENTS` environ
 
 ## LICENSE
 
-[MIT](https://github.com/zydou/gfw/LICENSE)
+[MIT](https://github.com/zydou/gfw/blob/master/LICENSE)

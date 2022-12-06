@@ -70,3 +70,11 @@ You can add the following lines to your `dnscrypt-proxy.toml` to enable the this
 ```toml
 forwarding_rules = '/app/forwarding-rules.txt'
 ```
+
+## Source code
+
+[GitHub](https://github.com/zydou/gfw) (Also contains other tools to bypass the GFW)
+
+## LICENSE
+
+[MIT](https://github.com/zydou/gfw/blob/master/LICENSE)
