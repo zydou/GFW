@@ -44,7 +44,7 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/riscv64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:latest
@@ -59,9 +59,3 @@ jobs:
           repository: ${{ github.repository_owner }}/${{ github.workflow }}
           short-description: "Dockerized tor client based on alpine"
           readme-filepath: ${{ github.workflow }}/README.md
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
