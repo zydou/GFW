@@ -1,11 +1,16 @@
 FROM alpine:3 as builder
 ARG VERSION=v106.0.5249.91-2
-ADD https://github.com/klzgrad/naiveproxy/releases/download/${VERSION}/naiveproxy-${VERSION}-openwrt-x86_64.tar.xz /tmp/naiveproxy.tar.xz
-RUN set -ex && \
-    apk add --no-cache upx && \
-    tar --strip-components 1 -xJof /tmp/naiveproxy.tar.xz -C /tmp && \
-    upx --lzma /tmp/naive && \
-    mv /tmp/naive /usr/bin/naive && \
+RUN set -ex ; \
+    apkArch="$(apk --print-arch)"; \
+    case "$apkArch" in \
+        x86_64) export ARCH='x86_64' ;; \
+        aarch64) export ARCH='aarch64_generic' ;; \
+    esac; \
+    wget -q -O /tmp/naiveproxy.tar.xz "https://github.com/klzgrad/naiveproxy/releases/download/${VERSION}/naiveproxy-${VERSION}-openwrt-${ARCH}.tar.xz" ; \
+    apk add --no-cache upx ; \
+    tar --strip-components 1 -xJof /tmp/naiveproxy.tar.xz -C /tmp ; \
+    upx --lzma /tmp/naive ; \
+    mv /tmp/naive /usr/bin/naive ; \
     rm -rf /tmp/*
 
 FROM alpine:3

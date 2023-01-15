@@ -59,7 +59,7 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           build-args: VERSION=${{ env.VERSION }}
           tags: |
@@ -140,10 +140,3 @@ jobs:
             ghcr.io/zydou/${{ github.workflow }}:multi
             zydou/${{ github.workflow }}:multi-${{ env.VERSION }}
             zydou/${{ github.workflow }}:multi
-
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
