@@ -39,7 +39,7 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:${{ env.date }}
@@ -55,9 +55,3 @@ jobs:
           repository: ${{ github.repository_owner }}/${{ github.workflow }}
           short-description: "An implementation of Tor, in Rust."
           readme-filepath: ${{ github.workflow }}/README.md
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: arti
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
