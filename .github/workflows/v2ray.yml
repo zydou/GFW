@@ -45,7 +45,7 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386
           push: ${{ github.event_name != 'pull_request' }}
           build-args: VERSION=${{ env.VERSION }}
           tags: |
@@ -63,9 +63,3 @@ jobs:
           repository: ${{ github.repository_owner }}/${{ github.workflow }}
           short-description: "V2Ray 路由规则文件加强版，代替 V2Ray 官方 geoip.dat 和 geosite.dat"
           readme-filepath: ${{ github.workflow }}/README.md
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
