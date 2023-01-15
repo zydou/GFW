@@ -43,7 +43,7 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:${{ env.date }}
@@ -58,12 +58,6 @@ jobs:
           repository: ${{ github.repository_owner }}/dnscrypt
           short-description: "Dockerized dnscrypt client based on alpine"
           readme-filepath: ${{ github.workflow }}/README.md
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
 
   adblock:
     runs-on: ubuntu-latest
@@ -99,19 +93,13 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/adblock.Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:adblock
             zydou/${{ github.workflow }}:adblock-${{ env.date }}
             ghcr.io/zydou/${{ github.workflow }}:adblock
             ghcr.io/zydou/${{ github.workflow }}:adblock-${{ env.date }}
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
 
   cnlist:
     runs-on: ubuntu-latest
@@ -147,17 +135,10 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/cnlist.Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:cnlist-${{ env.date }}
             zydou/${{ github.workflow }}:cnlist
             ghcr.io/zydou/${{ github.workflow }}:cnlist-${{ env.date }}
             ghcr.io/zydou/${{ github.workflow }}:cnlist
-
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
