@@ -43,7 +43,7 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:${{ env.date }}
@@ -58,12 +58,7 @@ jobs:
           repository: ${{ github.repository_owner }}/${{ github.workflow }}
           short-description: "Dockerized caddy with cloudflare plugin"
           readme-filepath: ${{ github.workflow }}/README.md
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
+
 
   build-naive:
     runs-on: ubuntu-latest
@@ -98,16 +93,10 @@ jobs:
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/forwardproxy.Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             zydou/${{ github.workflow }}:naive-${{ env.date }}
             zydou/${{ github.workflow }}:naive
             ghcr.io/zydou/${{ github.workflow }}:naive-${{ env.date }}
             ghcr.io/zydou/${{ github.workflow }}:naive
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
