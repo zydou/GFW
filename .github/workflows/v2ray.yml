@@ -1,6 +1,6 @@
 name: v2ray
 env:
-  VERSION: v5.1.0
+  VERSION: v5.2.1
 on:
   workflow_dispatch:
   schedule:
