@@ -1,4 +1,6 @@
 name: v2ray
+env:
+  VERSION: v4.45.2
 on:
   workflow_dispatch:
   schedule:
@@ -37,24 +39,53 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build
-        uses: docker/build-push-action@master
-        env:
-          CONTEXT: ${{ github.workflow }}
-          VERSION: "v4.45.2"
+
+      - name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@master
         with:
-          context: ./${{ env.CONTEXT}}
-          file: ./${{ env.CONTEXT }}/Dockerfile
+          input_string: ${{ env.VERSION }}
+          version_extractor_regex: 'v(.*)$'
+
+      - name: Build (pinned latest to v4)
+        if: steps.semver_parser.outputs.major == 4
+        uses: docker/build-push-action@master
+        with:
+          context: ./${{ github.workflow }}
+          file: ./${{ github.workflow }}/Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386
           push: ${{ github.event_name != 'pull_request' }}
           build-args: VERSION=${{ env.VERSION }}
           tags: |
             zydou/${{ github.workflow }}:latest
-            zydou/${{ github.workflow }}:${{ env.VERSION }}
-            zydou/${{ github.workflow }}:${{ env.DATE }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            zydou/${{ github.workflow }}:nightly-${{ env.DATE }}
             ghcr.io/zydou/${{ github.workflow }}:latest
-            ghcr.io/zydou/${{ github.workflow }}:${{ env.VERSION }}
-            ghcr.io/zydou/${{ github.workflow }}:${{ env.DATE }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            ghcr.io/zydou/${{ github.workflow }}:nightly-${{ env.DATE }}
+
+      - name: Build
+        if: steps.semver_parser.outputs.major != 4
+        uses: docker/build-push-action@master
+        with:
+          context: ./${{ github.workflow }}
+          file: ./${{ github.workflow }}/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386
+          push: ${{ github.event_name != 'pull_request' }}
+          build-args: VERSION=${{ env.VERSION }}
+          tags: |
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            zydou/${{ github.workflow }}:nightly-${{ env.DATE }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            ghcr.io/zydou/${{ github.workflow }}:nightly-${{ env.DATE }}
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@main
         with:
