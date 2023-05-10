@@ -4,6 +4,7 @@ FROM v2fly/v2fly-core:${VERSION:-v4.45.2} as upstream
 FROM alpine:3 as build
 COPY --from=upstream /usr/bin/v2ray /usr/bin/v2ray
 RUN set -xe && \
+    chmod 755 /usr/bin/v2ray && \
     apk add --no-cache upx && \
     upx --lzma /usr/bin/v2ray
 
@@ -15,3 +16,4 @@ RUN apk add --no-cache tzdata && \
 
 ENV TZ=Asia/Shanghai
 CMD [ "/usr/bin/v2ray", "-config", "/etc/v2ray/config.json" ]
+
