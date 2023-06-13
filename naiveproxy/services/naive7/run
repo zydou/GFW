@@ -1,0 +1,10 @@
+#!/command/with-contenv bash
+
+if [ $NAIVE_SERVER_ADDRESS_7 ];then
+    echo "starting naiveproxy: /usr/bin/naive --listen=${NAIVE_LISTEN_ADDRESS_7} --proxy=${NAIVE_SERVER_ADDRESS_7} ${NAIVE_EXTRA_7}"
+    s6-setuidgid abc /usr/bin/naive --listen=${NAIVE_LISTEN_ADDRESS_7} --proxy=${NAIVE_SERVER_ADDRESS_7} ${NAIVE_EXTRA_7}
+else
+    echo "naiveproxy-7 is not enabled"
+fi
+
+while true; do sleep 60; done
