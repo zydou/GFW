@@ -19,9 +19,9 @@ jobs:
       #   run: |
       #     echo "VERSION=$(wget -qO- https://api.github.com/repos/klzgrad/naiveproxy/tags | grep 'name' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
       - name: Get latest release
-        uses: rez0n/actions-github-release@main
+        uses: rez0n/actions-github-release@v2.0
         id: naive_release
-        with:
+        env:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: "klzgrad/naiveproxy"
           type: "latest"
@@ -92,7 +92,7 @@ jobs:
       #   run: |
       #     echo "VERSION=$(wget -qO- https://api.github.com/repos/klzgrad/naiveproxy/tags | grep 'name' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
       - name: Get latest release
-        uses: rez0n/actions-github-release@main
+        uses: rez0n/actions-github-release@v2.0
         id: naive_release
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
