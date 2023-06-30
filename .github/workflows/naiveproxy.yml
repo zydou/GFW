@@ -21,7 +21,7 @@ jobs:
       - name: Get latest release
         uses: rez0n/actions-github-release@main
         id: naive_release
-        env:
+        with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: "klzgrad/naiveproxy"
           type: "latest"
