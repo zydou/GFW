@@ -1,13 +1,17 @@
 # Bypass GFW
 
-    "Across the Great Wall we can reach every corner of the world."
-        - The first email ever sent from China, September 14, 1987.
+<div align="center">
+<a href="https://github.com/zydou/GFW"><img src="https://img.shields.io/badge/English-green.svg"></a>
+<a href="https://github.com/zydou/GFW/blob/master/README-CN.md"><img src="https://img.shields.io/badge/中文-purple.svg"></a>
+</div>
 
-Check [简体中文](README-CN.md) if you are in China.
+    "Across the Great Wall we can reach every corner in the world."
+        - The first email ever sent from China, September 14, 1987.
 
 This repository contains various docker images to bypass the GFW. Please see the detailed information in corresponding subdirectory.
 
 - [v2ray](https://github.com/zydou/gfw/tree/master/v2ray)
+- [xray](https://github.com/zydou/gfw/tree/master/xray)
 - [naiveproxy](https://github.com/zydou/gfw/tree/master/naiveproxy)
 - [caddy](https://github.com/zydou/gfw/tree/master/caddy)
 - [dnscrypt](https://github.com/zydou/gfw/tree/master/dnscrypt)
