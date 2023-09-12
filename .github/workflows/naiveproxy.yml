@@ -15,25 +15,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # - name: Set variables
-      #   run: |
-      #     echo "VERSION=$(wget -qO- https://api.github.com/repos/klzgrad/naiveproxy/tags | grep 'name' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
       - name: Get latest release
-        uses: rez0n/actions-github-release@v2.0
-        id: naive_release
+        id: latest-release
         env:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: "klzgrad/naiveproxy"
-          type: "latest"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: klzgrad/naiveproxy
+        run:
+          echo "TAG=$(gh api /repos/${{env.REPO}}/releases/latest --jq .tag_name)" >> $GITHUB_OUTPUT
+
       - name: Print release version
-        env:
-          release: ${{ steps.naive_release.outputs.release }}
-          release_id: ${{ steps.naive_release.outputs.release_id }}
-          browser_download_url: ${{ steps.naive_release.outputs.browser_download_url }}
         run: |
-          echo "${{ env.release }}"
-          echo "${{ env.release_id }}"
-          echo "${{ env.browser_download_url }}"
+          echo "${{ steps.latest-release.outputs.TAG }}"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
       - name: Set up Docker Buildx
@@ -55,7 +48,7 @@ jobs:
         uses: docker/build-push-action@master
         env:
           CONTEXT: ${{ github.workflow }}
-          VERSION: ${{ steps.naive_release.outputs.release }}
+          VERSION: ${{ steps.latest-release.outputs.TAG }}
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/Dockerfile
@@ -75,12 +68,6 @@ jobs:
           repository: ${{ github.repository_owner }}/${{ github.workflow }}
           short-description: "Minimal naiveproxy client. (only 5MB)"
           readme-filepath: ${{ github.workflow }}/README.md
-      - name: Delete untagged
-        uses: dylanratcliffe/delete-untagged-containers@main
-        with:
-          package_name: ${{ github.workflow }}
-          token: ${{ secrets.PAT }}
-          user: ${{ github.repository_owner }}
 
   build-multi:
     runs-on: ubuntu-latest
@@ -88,25 +75,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-      # - name: Set variables
-      #   run: |
-      #     echo "VERSION=$(wget -qO- https://api.github.com/repos/klzgrad/naiveproxy/tags | grep 'name' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
       - name: Get latest release
-        uses: rez0n/actions-github-release@v2.0
-        id: naive_release
+        id: latest-release
         env:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: "klzgrad/naiveproxy"
-          type: "latest"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: klzgrad/naiveproxy
+        run:
+          echo "TAG=$(gh api /repos/${{env.REPO}}/releases/latest --jq .tag_name)" >> $GITHUB_OUTPUT
       - name: Print release version
-        env:
-          release: ${{ steps.naive_release.outputs.release }}
-          release_id: ${{ steps.naive_release.outputs.release_id }}
-          browser_download_url: ${{ steps.naive_release.outputs.browser_download_url }}
         run: |
-          echo "${{ env.release }}"
-          echo "${{ env.release_id }}"
-          echo "${{ env.browser_download_url }}"
+          echo "${{ steps.latest-release.outputs.TAG }}"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
       - name: Set up Docker Buildx
@@ -128,7 +106,7 @@ jobs:
         uses: docker/build-push-action@v3
         env:
           CONTEXT: ${{ github.workflow }}
-          VERSION: ${{ steps.naive_release.outputs.release }}
+          VERSION: ${{ steps.latest-release.outputs.TAG }}
         with:
           context: ./${{ env.CONTEXT}}
           file: ./${{ env.CONTEXT }}/multi.Dockerfile
