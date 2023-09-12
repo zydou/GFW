@@ -1,0 +1,134 @@
+name: xray
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 21 * * *"
+  push:
+    branches:
+      - master
+    paths:
+      - xray/**
+      - .github/workflows/xray.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Get latest release
+        id: latest-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: XTLS/Xray-core
+        run:
+          echo "TAG=$(gh api /repos/${{env.REPO}}/releases/latest --jq .tag_name)" >> $GITHUB_OUTPUT
+
+      - name: Print release version
+        run: |
+          echo "${{ steps.latest-release.outputs.TAG }}"
+
+      - name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@master
+        with:
+          input_string: ${{steps.latest-release.outputs.TAG }}
+          version_extractor_regex: "v(.*)$"
+
+      - name: Use parsed semver
+        run: |
+          echo "${{ steps.semver_parser.outputs.major }}"
+          echo "${{ steps.semver_parser.outputs.minor }}"
+          echo "${{ steps.semver_parser.outputs.patch }}"
+          echo "${{ steps.semver_parser.outputs.fullversion }}"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@master
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@master
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@master
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PAT }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@master
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@master
+        with:
+          context: ./${{ github.workflow }}
+          file: ./${{ github.workflow }}/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          build-args: TAG=v${{ steps.semver_parser.outputs.fullversion }}
+          tags: |
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            ghcr.io/zydou/${{ github.workflow }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+
+
+  build-nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Set date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@master
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@master
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@master
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PAT }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@master
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@master
+        with:
+          context: ./${{ github.workflow }}
+          file: ./${{ github.workflow }}/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          build-args: TAG=nightly
+          tags: |
+            zydou/${{ github.workflow }}:latest
+            zydou/${{ github.workflow }}:${{ env.date }}
+            ghcr.io/zydou/${{ github.workflow }}:latest
+            ghcr.io/zydou/${{ github.workflow }}:${{ env.date }}
+
+  dockerhub-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@main
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PAT }}
+          repository: ${{ github.repository_owner }}/${{ github.workflow }}
+          short-description: "Xray 路由规则文件加强版，代替官方 geoip.dat 和 geosite.dat"
+          readme-filepath: ${{ github.workflow }}/README.md
