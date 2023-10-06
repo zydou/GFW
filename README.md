@@ -12,6 +12,7 @@ This repository contains various docker images to bypass the GFW. Please see the
 
 - [v2ray](https://github.com/zydou/gfw/tree/master/v2ray)
 - [xray](https://github.com/zydou/gfw/tree/master/xray)
+- [hysteria](https://github.com/zydou/gfw/tree/master/hysteria)
 - [naiveproxy](https://github.com/zydou/gfw/tree/master/naiveproxy)
 - [caddy](https://github.com/zydou/gfw/tree/master/caddy)
 - [dnscrypt](https://github.com/zydou/gfw/tree/master/dnscrypt)
