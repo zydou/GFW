@@ -16,7 +16,7 @@ Note: We only support hysteria v2.
 
 1. The binary is compressed using `upx`, so the image size is much smaller (~50%).
 
-2. Although hysteria will automatically download from the [P3TERX/GeoLite.mmdb](https://github.com/P3TERX/GeoLite.mmdb) repository when the GeoIP database does not exist, there will be no problem deploying hysteria on overseas VPS. However, when deployed as a client in China, downloading the GeoIP database from GitHub can be very slow or even impossible. Therefore, this image embeds a lite version of the GeoIP database that only contains: `geoip:cn` and `geoip:private`, which can meet the needs of most Chinese users.
+2. Hysteria will automatically download the ACL resources from the [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) repository, there will be no problem deploying hysteria on overseas VPS. However, when deployed as a client in China, downloading the `geosite` and `geoip` database from GitHub can be very slow or even impossible. Therefore, this image embeds the `geosite.dat` and a lite version of the GeoIP database that only contains: `geoip:cn` and `geoip:private`, which can meet the needs of most Chinese users.
 
 ## Docker CLI
 

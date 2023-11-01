@@ -11,9 +11,10 @@ RUN set -xe && \
 FROM alpine:3
 COPY --from=build /usr/local/bin/hysteria /usr/local/bin/hysteria
 RUN apk add --no-cache tzdata ca-certificates && \
-    wget -q -O /GeoLite2-Country.mmdb https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country-only-cn-private.mmdb && \
     if [ ! -e /etc/nsswitch.conf ]; then echo 'hosts: files dns' > /etc/nsswitch.conf; fi
-
+ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
+ADD https://github.com/Loyalsoldier/geoip/raw/release/geoip-only-cn-private.dat /geoip.dat
 ENV TZ=Asia/Shanghai \
     HYSTERIA_DISABLE_UPDATE_CHECK=1
-CMD ["hysteria", "server", "-c", "/etc/hysteria.yaml"]
+ENTRYPOINT ["hysteria"]
+CMD ["server", "-c", "/etc/hysteria.yaml"]
