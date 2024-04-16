@@ -1,11 +1,14 @@
-FROM rust:latest as builder
+FROM alpine:3 as binary
 WORKDIR /app
-RUN git clone --depth 1 https://gitlab.torproject.org/tpo/core/arti.git arti && \
-    cd arti && \
-    cargo build -p arti --release
+RUN wget -q -O arti.tar.xz "https://github.com/zydou/cli-tools/releases/download/arti/arti-$(uname -m)-unknown-linux-musl.tar.xz" && \
+    tar -xvf arti.tar.xz && \
+    rm -f arti.tar.xz && \
+    echo "[proxy]" > /config.toml && \
+    echo 'socks_listen = "0.0.0.0:9150"' >> /config.toml && \
+    echo 'dns_listen = "0.0.0.0:5353"' >> /config.toml
 
-FROM zydou/s6-overlay:debian-latest
-COPY --from=builder /app/arti/target/release/arti /usr/bin/arti
-RUN apt-get update && apt-get install -y sqlite3 openssl && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-CMD ["with-contenv", "s6-setuidgid", "abc", "/usr/bin/arti", "proxy", "--config", "/app/config.toml"]
+FROM gcr.io/distroless/cc-debian12:nonroot
+COPY --from=binary /app/arti /arti
+COPY --from=binary /config.toml /config.toml
+ENTRYPOINT [ "/arti" ]
+CMD [ "proxy", "-c", "/config.toml" ]

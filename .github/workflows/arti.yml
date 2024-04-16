@@ -1,12 +1,17 @@
+---
 name: arti
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 21 * * *"
+    - cron: 0 21 * * *
   push:
+    branches:
+      - master
     paths:
       - arti/**
       - .github/workflows/arti.yml
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,7 +32,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to DockerHub
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@master
         with:
           username: ${{ github.repository_owner }}
@@ -53,5 +57,5 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PAT }}
           repository: ${{ github.repository_owner }}/${{ github.workflow }}
-          short-description: "An implementation of Tor, in Rust."
+          short-description: An implementation of Tor, in Rust.
           readme-filepath: ${{ github.workflow }}/README.md
