@@ -7,13 +7,22 @@ RUN set -xe && \
     chmod 755 /usr/bin/v2ray && \
     apk add --no-cache upx && \
     upx --lzma /usr/bin/v2ray
+ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /usr/bin/geosite.dat
+ADD https://github.com/Loyalsoldier/geoip/raw/release/geoip-only-cn-private.dat /usr/bin/geoip.dat
 
-FROM alpine:3
+FROM alpine:3 AS v4
 COPY --from=build /usr/bin/v2ray /usr/bin/v2ray
-RUN apk add --no-cache tzdata && \
-    wget -q -O /usr/bin/geosite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat && \
-    wget -q -O /usr/bin/geoip.dat https://github.com/Loyalsoldier/geoip/raw/release/geoip-only-cn-private.dat
-
+COPY --from=build /usr/bin/geosite.dat /usr/bin/geosite.dat
+COPY --from=build /usr/bin/geoip.dat /usr/bin/geoip.dat
+RUN apk add --no-cache tzdata
 ENV TZ=Asia/Shanghai
 CMD [ "/usr/bin/v2ray", "-config", "/etc/v2ray/config.json" ]
 
+
+FROM alpine:3 AS v5
+COPY --from=build /usr/bin/v2ray /usr/bin/v2ray
+COPY --from=build /usr/bin/geosite.dat /usr/bin/geosite.dat
+COPY --from=build /usr/bin/geoip.dat /usr/bin/geoip.dat
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Shanghai
+CMD [ "/usr/bin/v2ray", "run", "-config=/etc/v2ray/config.json" ]
