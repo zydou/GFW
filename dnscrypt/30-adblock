@@ -1,3 +1,3 @@
 #!/bin/sh
 
-wget -O /app/blocked-names.txt https://anti-ad.net/domains.txt
+wget -O /app/blocked-names.txt "${BLOCKLIST_URL:-https://anti-ad.net/domains.txt}"

@@ -48,7 +48,7 @@ See [official docs](https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/dnscr
 
 ### Adblock
 
-`adblock` tag is bundled with an [anti-AD](https://github.com/privacy-protection-tools/anti-AD) domain list file and using `cron` job to update daily.
+`adblock` tag is bundled with an [anti-AD](https://github.com/privacy-protection-tools/anti-AD) domain list file and using `cron` job to update daily. The `BLOCKLIST_URL` environment variable can be used to choose a different blocklist.
 
 The domain file is located at `/app/blocked-names.txt` inside the container.
 
