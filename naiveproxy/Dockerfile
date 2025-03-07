@@ -7,9 +7,7 @@ RUN set -ex ; \
         aarch64) export ARCH='aarch64_generic' ;; \
     esac; \
     wget -q -O /tmp/naiveproxy.tar.xz "https://github.com/klzgrad/naiveproxy/releases/download/${VERSION}/naiveproxy-${VERSION}-openwrt-${ARCH}.tar.xz" ; \
-    apk add --no-cache upx ; \
     tar --strip-components 1 -xJof /tmp/naiveproxy.tar.xz -C /tmp ; \
-    upx --lzma /tmp/naive ; \
     mv /tmp/naive /usr/bin/naive ; \
     rm -rf /tmp/*
 
