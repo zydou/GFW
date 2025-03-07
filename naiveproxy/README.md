@@ -9,8 +9,36 @@ This is a dockerized [naiveproxy](https://github.com/klzgrad/naiveproxy) client 
 - [Docker Hub](https://hub.docker.com/r/zydou/naiveproxy)
 - [GitHub](https://github.com/users/zydou/packages/container/package/naiveproxy)
 
+### Supported Architectures
+
+- `x86`
+- `x86_64`
+- `aarch64_cortex-a53-static`
+- `aarch64_cortex-a53`
+- `aarch64_cortex-a72-static`
+- `aarch64_cortex-a72`
+- `aarch64_cortex-a76`
+- `aarch64_generic-static`
+- `aarch64_generic`
+- `arm_arm1176jzf-s_vfp`
+- `arm_cortex-a15_neon-vfpv4`
+- `arm_cortex-a5_vfpv4`
+- `arm_cortex-a7`
+- `arm_cortex-a7_neon-vfpv4-static`
+- `arm_cortex-a7_neon-vfpv4`
+- `arm_cortex-a7_vfpv4`
+- `arm_arm926ej-s`
+- `arm_cortex-a8_vfpv3`
+- `arm_cortex-a9-static`
+- `arm_cortex-a9`
+- `arm_cortex-a9_neon`
+- `arm_cortex-a9_vfpv3-d16`
+- `arm_mpcore`
+- `arm_xscale`
+
 ### Docker CLI
 
+If you are running on `amd64`, run the following command:
 ```bash
 docker run -d -restart=always \
     --name naiveproxy \
@@ -26,7 +54,7 @@ docker run -d -restart=always \
 version: "3.9"
 services:
   service.naiveproxy:
-    image: zydou/naiveproxy:x86_64
+    image: zydou/naiveproxy:x86_64  # This is amd64 version, see all tags for other architectures
     container_name: naiveproxy
     ports:
       - 12345:1080
